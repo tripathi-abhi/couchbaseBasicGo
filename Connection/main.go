@@ -14,16 +14,23 @@ func main() {
 
 	// variables required for connection
 	var (
-		databaseEndpoint = "cb.4eyb9sg8da5ac5od.cloud.couchbase.com"
-		bucketName       = "travel-sample"
-		username         = "kira"
-		password         = "Kira@123"
+		// databaseEndpoint = "cb.localhost.svc"
+		bucketName = "travel-sample"
+		username   = "Kira"
+		password   = "Kira@123"
 	)
+
+	// gocb.SetLogger(gocb.VerboseStdioLogger())
 
 	// Initialize connection with the db
 
-	// 1. Connect to the cluster using username and password
-	travelSampleCluster, connectionError := gocb.Connect("couchbases://"+databaseEndpoint, gocb.ClusterOptions{
+	// 1. Connect to the cluster using username and password.
+	/*
+		 	* 1. The url can be couchbases://endpoint if tls connection is to be made
+		 	* 2. Else couchbase://endpoint should be used
+			* 3. "couchbase://locahost" is equivalent to just "localhost"
+	*/
+	travelSampleCluster, connectionError := gocb.Connect("couchbase://localhost", gocb.ClusterOptions{
 		Authenticator: gocb.PasswordAuthenticator{
 			Username: username,
 			Password: password,
@@ -31,8 +38,9 @@ func main() {
 	})
 
 	if connectionError != nil {
-		log.Fatal(connectionError)
+		log.Fatal(connectionError.Error())
 	}
+	fmt.Println("Connected with cluster: ", travelSampleCluster)
 
 	// 2. Get the bucket and wait for the bucket object to be ready.
 	bucket := travelSampleCluster.Bucket(bucketName)
@@ -42,6 +50,6 @@ func main() {
 	}
 
 	col := bucket.Scope("inventory").Collection("hotel")
-	fmt.Println("Collection: ",col)
+	fmt.Println("Collection: ", col)
 
 }
