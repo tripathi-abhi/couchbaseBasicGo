@@ -14,13 +14,13 @@ func main() {
 
 	// variables required for connection
 	var (
-		// databaseEndpoint = "cb.localhost.svc"
+		// databaseEndpoint = "cb.default.svc"
 		bucketName = "travel-sample"
-		username   = "Kira"
+		username   = "kira"
 		password   = "Kira@123"
 	)
 
-	// gocb.SetLogger(gocb.VerboseStdioLogger())
+	gocb.SetLogger(gocb.VerboseStdioLogger())
 
 	// Initialize connection with the db
 
